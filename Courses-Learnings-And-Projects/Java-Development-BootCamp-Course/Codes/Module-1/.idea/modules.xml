@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Getting Started/Getting Started.iml" filepath="$PROJECT_DIR$/Getting Started/Getting Started.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GettingStarted-1/GettingStarted-1.iml" filepath="$PROJECT_DIR$/GettingStarted-1/GettingStarted-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Module-1.iml" filepath="$PROJECT_DIR$/.idea/Module-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Variables/Variables.iml" filepath="$PROJECT_DIR$/Variables/Variables.iml" />
+    </modules>
+  </component>
+</project>
