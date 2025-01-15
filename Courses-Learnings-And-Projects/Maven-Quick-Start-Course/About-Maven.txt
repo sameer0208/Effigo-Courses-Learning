@@ -1,0 +1,49 @@
+What is Maven?
+> Build Tool 
+	a. Java & Others
+> Dependency Management
+> Repository System
+> Plugins
+	a. everything more functionality
+	b. goals
+	c. dependencies
+> Best Practices
+> POM (Project Object Model) pom.xml:
+	a. project metadata
+	b. maven coordinates
+	c. uniquely identifies components
+	d. group, name and version
+	e. dependencies
+	f. coordinates
+	g. build settings
+	h. java version
+	i. artifact name
+	j. inheritance (sort of)
+	k. super pom
+	l. convention over configuration
+	m. project unique information
+Major advantage of using Maven is Dependency Management:
+> automatically resolve dependencies
+> transitive dependencies
+> maven repositories
+> local repository
+
+Maven: Building Blocks -
+Three Main Groups:
+	> Goals
+	> Phases
+	> Lifecycles
+
+Goals - > like ant task
+	> plugin + goal name
+	> e.g. compile goal on compiler plugin
+
+Phases - > One or Many goals - part of greater lifecycle
+	> e.g. compile maps to compiler:compile
+
+Lifecycles -
+	Jar Lifecycle: compile --> test --> package --> install --> deploy
+Lifecycles contain phases, phases map to goals.
+
+To generate maven project using archetype:
+mvn archetype:generate -DgroupId=clinic.programming.training -DartifactId=jumpstart-example -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false

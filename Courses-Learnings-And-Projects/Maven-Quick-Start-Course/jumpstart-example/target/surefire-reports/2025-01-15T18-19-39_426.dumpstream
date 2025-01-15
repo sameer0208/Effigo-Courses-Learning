@@ -1,0 +1,5 @@
+# Created at 2025-01-15T18:19:40.628
+Boot Manifest-JAR contains absolute paths in classpath 'E:\Effigo\Courses-Learnings-And-Projects\Maven-Quick-Start-Course\jumpstart-example\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
