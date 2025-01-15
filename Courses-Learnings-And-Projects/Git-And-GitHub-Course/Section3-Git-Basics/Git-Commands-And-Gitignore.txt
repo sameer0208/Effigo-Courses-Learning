@@ -1,0 +1,48 @@
+Repositories:
+> usually called as 'repos', store the full history and source control of a project.
+> can either be hosted locally or on a shared server such as GitHub.
+> most repositories are stored on GitHub, while core contributors make copies of the repository on their machine and update the repository using the push/pull system.
+> any repository store somewhere other than locally is called a 'remote repository'.
+> they are the timelines of the entire project, including all previous changes.
+
+Commit - is similar to taking a snapshot of the current state of the project, then storing it on a timeline.
+
+Git Commands:
+> git init - to initialize the git repository on local server
+> git status - what are the changes made 
+> git add filename - to add the specific file
+> git add . - to add all the files/folders 
+> git rm -f file.txt - to remove the file
+> git config --global user.email "abc@gmail.com", git config --global user.name "xyz" - to login into the terminal
+> git commit -m "message here" - to make commit with the message
+> git log - displays committed snapshots
+> git checkout - to navigate between the branches created by git branch
+> git revert commitid - it will revert the changes made at that commit
+> git reset --hard commitid - to undo the changes in your working directory and get back to a specific commit while discarding all the commits made after that one.
+> git rm -f --cached . - to remove the cached file
+
+Types of Git Reset:
+1. Soft - (mostly in case of some small mistakes like spelling errors)
+	--soft flag will change your commit, but will not remove any of the changes you have 	made.
+	e.g., if you reset back one commit, your environment would be the same, but the 	commit you are on would be changed
+	this is useful if you are trying to get rid of a problem with the commit (e.g. 	spelling error)
+2. Mixed - (mostly in the case when you have to committed the files which you don't want to)
+	--mixed is the default setting for the reset commad, so no need to specify it.
+	instead of keeping everything staged and ready to commit, it instead changes the 	'stage' to match the commit you're reverting to.
+	this doesn't remove the files; they are still in the working directory. However, you 	have to commit them again if you want to re-include them.
+3. Hard - 
+	 --hard is the strongest out of the three, and the most commonly used.
+	using this flag will rest the repository as if you were still working on that 	commit; leaving no data from any commits after it.
+	this is mostly used when some irreversible error has been made, and cannot be 	removed manually without completely resetting the program.
+	
+
+Creating a .gitignore:
+> .gitignore - is the list of files or directories which you don't want to track.
+> Create a file .gitignore - touch .gitignore
+> In this users can input the names of all the files and directories which they want to ignore.
+> Mostly it has to be created in the beginning of the project if you are adding in between then make sure to remove cached files so that it can ignore the files and folders mentioned in the .gitignore.
+	git rm -f --cached .
+> If you want to ignore all the files of any directory then in .gitignore you have to write like this: DirectoryName/*
+
+
+

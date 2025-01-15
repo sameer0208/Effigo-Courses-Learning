@@ -1,0 +1,17 @@
+Using git remotely:
+1. git init (to initialise the git)
+
+2. git remote add origin GitHub.com/....... (to connect local repository to remote repository)
+
+3. git remote -v (it will show the GitHub repository fetch and push)
+
+4. git pull origin master / git pull - to fetch and download content from a remote repository and immediately update the local repository to match that content (from remote to local)
+
+5. git push -u origin master - to push the commits from local repository to the remote repository present in the GitHub. (from local to remote)
+
+6. git push origin newbranch - it will make a new branch and commit the changes in it on the remote repository
+
+7. git push origin --delete branchname - it will delete the branch from remote repository
+
+
+ 

@@ -1,0 +1,15 @@
+Git GUI SourceTree
+
+GUI - Graphical User Interface is any software that can allow the user to perform tasks through a graphical interface
+
+SourceTree - > is a Git GUI allowing you to interact with your repositories through a graphical interface.
+> it builds off the core GUI commands and systems, however, it is executed through icons and buttons instead of terminal commands.
+> used as an alternative to the terminal when using Git.
+
+Downloaded SourceTree from sourcetreeapp.com
+We can do the following things through sourcetree software:
+> Stage and commit
+> Interaction (Revert, Reset, etc.)
+> Create and remove branches
+> Merge branches
+> Push/Pull requests

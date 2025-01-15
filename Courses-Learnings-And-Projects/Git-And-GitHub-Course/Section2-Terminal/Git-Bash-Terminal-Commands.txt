@@ -1,0 +1,21 @@
+Bash Terminal Commands:
+
+1. ls - to get the list of the files and folders present in the directory
+
+2. cd.. - to come out from the directory
+
+3. cd directory/ - to enter into the directory
+
+4. cd ~ - to go back to the default path
+
+5. mkdir xyz - to create a folder
+
+6. cd ~/xyz - first to enter to default path and then in the given folder
+
+7. rm -rf foldername - to remove/delete the folder
+
+8. git --version - to know the version of git
+
+9. touch file.txt - to create a new file
+
+10. rm file.txt - to remove/delete a file

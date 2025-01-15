@@ -1,0 +1,26 @@
+WHAT IS GIT?
+
+> Git is based on the large number of software known as Source Control or Version Control.
+> Source control, or version control, is a way of tracking your files progress over time.
+> It is usually saved in a series of snapshots and branches, which you can move back and forth between.
+
+Source control allows you to:
+> Distribute your file changes over time
+> Prevent against data loss/damage by creating backup snapshots
+> Manage complex project structures
+
+Git: is a source control software, it follows all the same rules and concepts that any source control follows.
+
+Git is most popular source control software in the world.
+Lots of documentation and support.
+Lots of integration with other applications (SourceTree, Heroku, GitHub)
+
+------------------------------------- GIT VS GITHUB -----------------------------------------
+> GitHub is an application allowing you to store remote repositories.
+> Interaction with GitHub repository through the push/pull system on local machine.
+> Primarily used to allow other people to add to the project
+> GitHub allows more people than just yourself to see and interact with the repository.
+
+> Git is a source control software allowing you to take snapshots and distribute your creations and modifications over time.
+> GitHub is an application allowing you to store and interact with your repository on a remote server, as well as adding more features
+> Git is the bones and flesh of source control, while GitHub gives you the platform to work with your repository easier.

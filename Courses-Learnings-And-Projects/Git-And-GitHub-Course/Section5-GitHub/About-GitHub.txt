@@ -1,0 +1,10 @@
+GitHub:
+> is an application that allows you to store remote repositories on their servers.
+> also provides a user-friendly platform to interact with and manage your repositories.
+> it is public, allowing millions to share their projects to the world.
+
+Uses:
+> have a portfolio of your work.
+> open opportunities you might not have with a local repository.
+> easy access from any device in any location.
+> industry standards for hosting Git repositories.

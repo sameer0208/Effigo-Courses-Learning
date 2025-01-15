@@ -1,0 +1,20 @@
+Git branches:
+> git branches are a way to create separate development paths without overriding or creating copies of your project.
+> branches can be added, deleted and merged just like regular commits.
+
+Uses of branches:
+> create separated development paths without overriding progress.
+> separate different end goals of your project.
+> creates separate branches for each stage of development (release, development, fixes, master)
+
+Commands:
+git checkout -b dev: this will create new branch dev and also switched to it
+git checkout master: it will come back to the master branch
+git branch bugs: this will create a new branch but will not switch to it
+git branch -a: to see the list of all the branches
+git checkout bugs: to switch to the bugs branch
+git branch -d bugs: to delete the branch
+
+Merging Branches:
+git merge dev - to merge the current branch with the dev branch
+
