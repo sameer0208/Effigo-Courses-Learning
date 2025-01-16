@@ -1,0 +1,29 @@
+Git Stash
+In Git, the stash command is used to temporarily save changes that you don't want to commit immediately. It allows you to store your uncommitted changes in a "stash" so you can switch branches or work on something else without committing those changes.
+
+Why Use Git Stash?
+> To switch branches without committing changes.
+> To test or debug something on a clean working directory.
+> To save unfinished work temporarily.
+
+Commands:
+git stash: it saves the changes with random index or id.
+git stash -m "changes made message": it will save the changes in stash with the given message
+git stash list: to get the list of things available in stash
+git stash apply: it applies the last stash saved
+git stash apply stash@{2}: it will apply the stash with the given index only
+git stash pop: it will delete the latest stash
+git stash drop stash@{2}: it will delete the stash with the given index only
+git stash clear: it will delete all the stash available in the stash list
+git stash branch "branchname": it will create a new branch using stash
+
+Example Scenario for understanding:
+I am working on main branch i made some changes, and then i got some work related to feature-branch. Then if i directly try to switch the git will stop me as the changes made are not committed so i will apply stash there.
+Command--> git stash
+now my working directory is cleaned, and i can switch to other branch
+Command --> git checkout feature-branch
+Then i will work on feature-branch make the required changes and commit them and comeback to the main branch.
+Command --> git checkout main
+Then i will run the command to bring back my changes i saved in stash:
+Command--> git stash pop
+Now i have all the changes which i made now i can commit them.
