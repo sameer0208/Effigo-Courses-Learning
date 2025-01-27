@@ -1,0 +1,563 @@
+{
+	"info": {
+		"_postman_id": "1ae03ed9-6132-4f29-b0fd-2ef32eba79d8",
+		"name": "learning-portal-apis",
+		"description": "Hii, I am Sayyed Sameer Basir. This is the documentation related to my project.\n\nThis collection contains APIs related to the Spring Boot Project i.e. Learning Portal.\n\nIt contains of 4 Sections:\n\n1. Users API Calls\n    \n    1. Create Users\n        \n    2. Get User Details By ID\n        \n    3. Get All Users Details\n        \n    4. Update User Details By ID\n        \n    5. Delete User Details By ID\n        \n    6. Get Registered Courses By User ID\n        \n2. Course API Calls\n    \n    1. Create Courses\n        \n    2. Get Course Details By ID\n        \n    3. Get All Courses Details\n        \n    4. Update Course Details By ID\n        \n    5. Delete Course Details By ID\n        \n3. Registered Course API Calls\n    \n    1. Create Registered Courses\n        \n    2. Get Registered Course Details By ID\n        \n    3. Get All Registered Courses Details\n        \n    4. Update Registered Course Details By ID\n        \n    5. Delete Registered Course Details By ID\n        \n4. Favourite Course API Calls\n    \n    1. Create Favourite Courses\n        \n    2. Get Favourite Course Details By ID\n        \n    3. Get All Favourite Courses Details\n        \n    4. Update Favourite Course Details By ID\n        \n    5. Delete Favourite Course Details By ID",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25930363"
+	},
+	"item": [
+		{
+			"name": "users-api-calls",
+			"item": [
+				{
+					"name": "create-new-user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"nitish\",\r\n    \"password\": \"nitish_up_wala\",\r\n    \"userRole\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/create-user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"create-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-user-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/fetch-user/b0e706f8-9783-49be-910b-a306204de97b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"fetch-user",
+								"b0e706f8-9783-49be-910b-a306204de97b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/fetch-all-users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"fetch-all-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user-by-id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"sophiyan\",\r\n    \"password\":\"sophiyan_0901\",\r\n    \"userRole\":\"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/update/user-details/3c3163cb-e9af-4e99-8471-bcedc65ffea2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"update",
+								"user-details",
+								"3c3163cb-e9af-4e99-8471-bcedc65ffea2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user-by-id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/delete-user/b0e706f8-9783-49be-910b-a306204de97b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"delete-user",
+								"b0e706f8-9783-49be-910b-a306204de97b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-registered-courses-by-user-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/fetch-user-registered-course/0914348a-8cc5-4843-bb65-9c8d2c1bc9fa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"fetch-user-registered-course",
+								"0914348a-8cc5-4843-bb65-9c8d2c1bc9fa"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This sections contains following actions:\n\n1. Create Users\n    \n2. Get User Details By ID\n    \n3. Get All Users Details\n    \n4. Update User Details By ID\n    \n5. Delete User Details By ID"
+		},
+		{
+			"name": "course-api-calls",
+			"item": [
+				{
+					"name": "create-new-course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseCategory\":\"3\",\r\n    \"description\":\"Java Basics Concepts covered to boost you in the world of JAVA\",\r\n    \"price\":\"99\",\r\n    \"title\":\"Core Java\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/courses/create-course",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"courses",
+								"create-course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-course-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/courses/fetch-course/db5e8f1d-4d0d-4818-94f4-8090fe730dde",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"courses",
+								"fetch-course",
+								"db5e8f1d-4d0d-4818-94f4-8090fe730dde"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/courses/fetch-all-courses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"courses",
+								"fetch-all-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-course-by-id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseCategory\":\"2\",\r\n    \"description\":\"Learn Database basics to advanced in one course\",\r\n    \"price\":\"399\",\r\n    \"title\":\"MySQL Course\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/courses/update/course-details/eadd60be-1e99-4aaa-b964-ac5845d92ae8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"courses",
+								"update",
+								"course-details",
+								"eadd60be-1e99-4aaa-b964-ac5845d92ae8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-course-by-id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/courses/delete-course/43227409-fbbd-4ee1-9c00-72bddfcf5de4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"courses",
+								"delete-course",
+								"43227409-fbbd-4ee1-9c00-72bddfcf5de4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This section contains following actions:\n\n1. Create Courses\n    \n2. Get Course Details By ID\n    \n3. Get All Courses Details\n    \n4. Update Course Details By ID\n    \n5. Delete Course Details By ID"
+		},
+		{
+			"name": "registered-courses-api-calls",
+			"item": [
+				{
+					"name": "add-registered-course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user\": {\r\n    \"userId\": \"3c3163cb-e9af-4e99-8471-bcedc65ffea2\"\r\n  },\r\n  \"course\": {\r\n    \"courseId\": \"23381c3d-e3a0-445b-b8a5-df54f4969421\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/registered-courses/course-registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"registered-courses",
+								"course-registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-registered-course-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/registered-courses/fetch-registered-course/ab871468-6767-4650-853c-a6a62c7b8829",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"registered-courses",
+								"fetch-registered-course",
+								"ab871468-6767-4650-853c-a6a62c7b8829"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-registered-courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/registered-courses/fetch-registered-courses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"registered-courses",
+								"fetch-registered-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-registered-course-by-id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/registered-courses/delete-registered-course/2ae4e0f8-9a76-4a4a-8f52-4244678b61d2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"registered-courses",
+								"delete-registered-course",
+								"2ae4e0f8-9a76-4a4a-8f52-4244678b61d2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-registered-course-by-id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user\": {\r\n    \"userId\": \"0914348a-8cc5-4843-bb65-9c8d2c1bc9fa\"\r\n  },\r\n  \"course\": {\r\n    \"courseId\": \"23381c3d-e3a0-445b-b8a5-df54f4969421\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/registered-courses/update-registered-course/ab871468-6767-4650-853c-a6a62c7b8829",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"registered-courses",
+								"update-registered-course",
+								"ab871468-6767-4650-853c-a6a62c7b8829"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This section contains following actions:\n\n1. Create Registered Courses\n    \n2. Get Registered Course Details By ID\n    \n3. Get All Registered Courses Details\n    \n4. Update Registered Course Details By ID\n    \n5. Delete Registered Course Details By ID"
+		},
+		{
+			"name": "favourite-course-api-calls",
+			"item": [
+				{
+					"name": "add-favourite-course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"registeredCourses\": {\r\n    \"registrationId\": \"ab871468-6767-4650-853c-a6a62c7b8829\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/favourite-courses/add-favourite-course",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"favourite-courses",
+								"add-favourite-course"
+							]
+						},
+						"description": "This section contains following actions:\n\n1. Create Favourite Courses\n    \n2. Get Favourite Course Details By ID\n    \n3. Get All Favourite Courses Details\n    \n4. Update Favourite Course Details By ID\n    \n5. Delete Favourite Course Details By ID"
+					},
+					"response": []
+				},
+				{
+					"name": "get-favourite-course-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/favourite-courses/fetch-favourite-course/4064a364-a84b-439d-97f3-a569953f64ea",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"favourite-courses",
+								"fetch-favourite-course",
+								"4064a364-a84b-439d-97f3-a569953f64ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-favourite-courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/favourite-courses/fetch-favourite-courses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"favourite-courses",
+								"fetch-favourite-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-registered-course-by-id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/favourite-courses/delete-favourite-course/9b7cebe7-8ea0-4dd6-a07d-b9d477a570c1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"favourite-courses",
+								"delete-favourite-course",
+								"9b7cebe7-8ea0-4dd6-a07d-b9d477a570c1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-favourite-course-by-id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"registeredCourses\": {\r\n    \"registrationId\": \"b4602f7f-ee8b-482d-b0c7-bc085ce3befa\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/favourite-courses/update-favourite-course/704de96b-9fb4-45b8-81d9-ca9b620ad218",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"favourite-courses",
+								"update-favourite-course",
+								"704de96b-9fb4-45b8-81d9-ca9b620ad218"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
