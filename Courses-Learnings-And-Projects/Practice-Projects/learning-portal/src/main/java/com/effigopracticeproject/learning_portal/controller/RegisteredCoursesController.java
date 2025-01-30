@@ -5,10 +5,11 @@ import com.effigopracticeproject.learning_portal.dto.RegisteredCoursesResponseDt
 import com.effigopracticeproject.learning_portal.entity.Course;
 import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
 import com.effigopracticeproject.learning_portal.entity.User;
-import com.effigopracticeproject.learning_portal.repository.CourseRepository;
-import com.effigopracticeproject.learning_portal.repository.UserRepository;
+import com.effigopracticeproject.learning_portal.exceptions.NoRegisteredCourseFoundException;
 import com.effigopracticeproject.learning_portal.service.RegisteredCoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,67 +25,62 @@ public class RegisteredCoursesController {
     @Autowired
     private RegisteredCoursesService registeredCoursesService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
     @PostMapping("/course-registration")
-    public RegisteredCourses addRegisteredCourse(@RequestBody RegisteredCourses registeredCourses) {
-        logger.info("Starting registration of course with ID: {}", registeredCourses.getCourse().getCourseId());
-
-        User user = userRepository.findById(registeredCourses.getUser().getUserId()).orElse(null);
-        Course course = courseRepository.findById(registeredCourses.getCourse().getCourseId()).orElse(null);
-
-        if (user == null || course == null) {
-            logger.warn("User or Course not found. User ID: {}, Course ID: {}", registeredCourses.getUser().getUserId(), registeredCourses.getCourse().getCourseId());
-            return null;
+    public ResponseEntity<RegisteredCourses> addRegisteredCourse(@RequestBody RegisteredCourses registeredCourses) {
+        logger.info("Registering course with ID: {}", registeredCourses.getCourse().getCourseId());
+        try {
+            RegisteredCourses createdCourse = registeredCoursesService.addRegisteredCourse(registeredCourses);
+            return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error("Error registering course: {}", e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        registeredCourses.setUser(user);
-        registeredCourses.setCourse(course);
-        RegisteredCourses registeredCourse = registeredCoursesService.addRegisteredCourse(registeredCourses);
-        logger.info("Successfully registered course with ID: {}", registeredCourse.getRegistrationId());
-        return registeredCourse;
     }
 
     @GetMapping("/fetch-registered-course/{id}")
-    public Optional<RegisteredCourses> getRegisteredCourseById(@PathVariable("id") String registeredCourseId) {
-        logger.info("Fetching registered course with ID: {}", registeredCourseId);
-        Optional<RegisteredCourses> registeredCourse = registeredCoursesService.getRegisteredCourseById(registeredCourseId);
-        if (registeredCourse.isEmpty()) {
+    public ResponseEntity<Optional<RegisteredCourses>> getRegisteredCourseById(@PathVariable("id") String registeredCourseId) {
+        try {
+            Optional<RegisteredCourses> registeredCourse = registeredCoursesService.getRegisteredCourseById(registeredCourseId);
+            if (registeredCourse.isPresent()) {
+                return new ResponseEntity<>(registeredCourse, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(registeredCourse, HttpStatus.NOT_FOUND);
+            }
+        } catch (NoRegisteredCourseFoundException e) {
             logger.warn("No registered course found with ID: {}", registeredCourseId);
-        } else {
-            logger.info("Registered course fetched successfully with ID: {}", registeredCourseId);
+            return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
         }
-        return registeredCourse;
     }
 
     @GetMapping("/fetch-registered-courses")
-    public List<RegisteredCourses> getAllRegisteredCourses() {
+    public ResponseEntity<List<RegisteredCourses>> getAllRegisteredCourses() {
         logger.info("Fetching all registered courses");
-        List<RegisteredCourses> registeredCoursesList = registeredCoursesService.getAllRegisteredCourses();
-        logger.info("Fetched {} registered courses successfully", registeredCoursesList.size());
-        return registeredCoursesList;
+        List<RegisteredCourses> registeredCourses = registeredCoursesService.getAllRegisteredCourses();
+        if (registeredCourses.isEmpty()) {
+            return new ResponseEntity<>(registeredCourses, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(registeredCourses, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-registered-course/{id}")
-    public void deleteRegisteredCourseById(@PathVariable("id") String registeredCourseId) {
-        logger.info("Deleting registered course with ID: {}", registeredCourseId);
-        registeredCoursesService.deleteRegisteredCourseById(registeredCourseId);
-        logger.info("Registered course deleted successfully with ID: {}", registeredCourseId);
+    public ResponseEntity<String> deleteRegisteredCourseById(@PathVariable("id") String registeredCourseId) {
+        try {
+            registeredCoursesService.deleteRegisteredCourseById(registeredCourseId);
+            return new ResponseEntity<>("Registered course deleted successfully", HttpStatus.NO_CONTENT);
+        } catch (NoRegisteredCourseFoundException e) {
+            logger.warn("No registered course found with ID: {}", registeredCourseId);
+            return new ResponseEntity<>("Registered course not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/update-registered-course/{id}")
-    public RegisteredCourses updateRegisteredCourse(@PathVariable("id") String registeredCourseId, @RequestBody RegisteredCourses registeredCourseUpdateDetails) {
-        logger.info("Updating registered course with ID: {}", registeredCourseId);
-        RegisteredCourses updatedRegisteredCourse = registeredCoursesService.updateRegisteredCourseById(registeredCourseId, registeredCourseUpdateDetails);
-        if (updatedRegisteredCourse == null) {
-            logger.warn("No registered course found for update with ID: {}", registeredCourseId);
-        } else {
-            logger.info("Registered course updated successfully with ID: {}", updatedRegisteredCourse.getRegistrationId());
+    public ResponseEntity<RegisteredCourses> updateRegisteredCourse(@PathVariable("id") String registeredCourseId, @RequestBody RegisteredCourses registeredCourseUpdateDetails) {
+        try {
+            RegisteredCourses updatedCourse = registeredCoursesService.updateRegisteredCourseById(registeredCourseId, registeredCourseUpdateDetails);
+            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+        } catch (NoRegisteredCourseFoundException e) {
+            logger.warn("No registered course found with ID: {}", registeredCourseId);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return updatedRegisteredCourse;
     }
 }
