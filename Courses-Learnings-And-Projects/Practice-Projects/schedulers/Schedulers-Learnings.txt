@@ -1,0 +1,170 @@
+# Spring Boot Schedulers - Complete Documentation
+
+## 1. Introduction to Schedulers in Spring Boot
+Spring Boot provides built-in support for scheduling tasks using the `@Scheduled` annotation. This allows developers to run background jobs at fixed intervals, with cron expressions, or at a fixed delay.
+
+## 2. Enabling Scheduling in Spring Boot
+To enable scheduling in a Spring Boot application, you need to add `@EnableScheduling` in your main class:
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@SpringBootApplication
+@EnableScheduling // Enables Spring's scheduling capabilities
+public class SchedulerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SchedulerApplication.class, args);
+    }
+}
+```
+
+## 3. `@Scheduled` Annotation
+The `@Scheduled` annotation is used to define scheduled tasks in Spring Boot.
+### 3.1 Syntax
+```java
+@Scheduled(fixedRate = 5000) // Runs every 5 seconds
+public void scheduledTask() {
+    System.out.println("Task executed at: " + LocalDateTime.now());
+}
+```
+
+### 3.2 Attributes of `@Scheduled`
+| Attribute        | Description |
+|-----------------|-------------|
+| `fixedRate`     | Runs the task at a fixed interval (in milliseconds), without waiting for the previous execution to complete. |
+| `fixedDelay`    | Runs the task with a fixed delay after the previous execution completes. |
+| `initialDelay`  | Specifies the delay before the first execution of the task. |
+| `cron`          | Allows you to specify a cron expression to run tasks at specific times. |
+
+## 4. Types of Scheduling in Spring Boot
+### 4.1 Fixed Rate Scheduling
+Executes a task at a constant rate.
+```java
+@Scheduled(fixedRate = 10000) // Runs every 10 seconds
+public void fixedRateTask() {
+    System.out.println("Fixed Rate Task executed at: " + LocalDateTime.now());
+}
+```
+
+### 4.2 Fixed Delay Scheduling
+Executes a task after the previous task has completed with a delay.
+```java
+@Scheduled(fixedDelay = 5000) // Waits 5 seconds after the last execution finishes
+public void fixedDelayTask() {
+    System.out.println("Fixed Delay Task executed at: " + LocalDateTime.now());
+}
+```
+
+### 4.3 Initial Delay Scheduling
+Delays the first execution but runs subsequently at a fixed delay.
+```java
+@Scheduled(fixedDelay = 5000, initialDelay = 10000) // First execution after 10 sec, then every 5 sec
+public void initialDelayTask() {
+    System.out.println("Initial Delay Task executed at: " + LocalDateTime.now());
+}
+```
+
+### 4.4 Cron Expression Scheduling
+Cron expressions define precise execution times.
+```java
+@Scheduled(cron = "0 */1 * * * ?") // Runs every 1 minute
+public void cronTask() {
+    System.out.println("Cron Task executed at: " + LocalDateTime.now());
+}
+```
+
+## 5. Understanding Cron Expressions
+Cron expressions consist of six fields:
+```
+Seconds  Minutes  Hours  Day of Month  Month  Day of Week
+0-59     0-59     0-23   1-31         1-12   0-7 (Sunday=0 or 7)
+```
+| Example Cron | Meaning |
+|-------------|---------|
+| `0 0 12 * * ?` | Runs every day at 12:00 PM |
+| `0 15 10 * * ?` | Runs every day at 10:15 AM |
+| `0 0/30 * * * ?` | Runs every 30 minutes |
+
+## 6. Creating a Scheduled Task with Database Logging
+A full implementation of a scheduled task that logs execution in a PostgreSQL database.
+
+### 6.1 Entity Class
+```java
+@Entity
+@Table(name = "task_execution_logs")
+public class TaskExecutionEntity {
+    @Id
+    @Column(name = "id", updatable = false, nullable = false)
+    private String id;
+    
+    @Column(name = "task_name")
+    private String taskName;
+    
+    @Column(name = "execution_time")
+    private LocalDateTime executionTime;
+    
+    public TaskExecutionEntity(String taskName, LocalDateTime executionTime) {
+        this.id = UUID.randomUUID().toString();
+        this.taskName = taskName;
+        this.executionTime = executionTime;
+    }
+}
+```
+
+### 6.2 Repository
+```java
+@Repository
+public interface TaskExecutionRepository extends JpaRepository<TaskExecutionEntity, String> {}
+```
+
+### 6.3 Service
+```java
+@Service
+public class ScheduledTaskService {
+    private final TaskExecutionRepository taskExecutionRepository;
+    static int count = 0;
+
+    public ScheduledTaskService(TaskExecutionRepository taskExecutionRepository) {
+        this.taskExecutionRepository = taskExecutionRepository;
+    }
+
+    @Scheduled(cron = "0 */1 * * * ?") // Runs every 1 minute
+    public void executeScheduledTask() {
+        ++count;
+        TaskExecutionEntity task = new TaskExecutionEntity("New Task " + count, LocalDateTime.now());
+        taskExecutionRepository.save(task);
+        System.out.println("Task executed and saved at: " + LocalDateTime.now());
+    }
+}
+```
+
+7. Configuring Database (PostgreSQL)
+	7.1 Add PostgreSQL Dependencies (pom.xml)
+```xml
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+	7.2 Set Database Properties (`application.properties`)
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/scheduler_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+8. Running the Application
+- Start PostgreSQL: `sudo systemctl start postgresql`
+- Run the Spring Boot app: `mvn spring-boot:run`
+- Check database: `SELECT * FROM task_execution_logs;`
+
+9. Conclusion
+Spring Boot schedulers provide a powerful way to automate tasks. Using `@Scheduled`, we can configure periodic jobs, log task execution, and integrate with databases seamlessly.
+
