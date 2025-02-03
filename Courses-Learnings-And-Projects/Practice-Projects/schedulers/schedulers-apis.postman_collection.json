@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "22b56394-eb42-4862-8831-0024794b5d1b",
+		"name": "schedulers-apis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25930363"
+	},
+	"item": [
+		{
+			"name": "enable-scheduler",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduler/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduler",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "disable-scheduler",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduler/stop",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduler",
+						"stop"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
