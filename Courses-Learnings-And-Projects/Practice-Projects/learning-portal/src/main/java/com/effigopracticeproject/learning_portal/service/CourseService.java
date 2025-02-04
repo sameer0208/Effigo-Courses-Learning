@@ -1,15 +1,19 @@
 package com.effigopracticeproject.learning_portal.service;
 
+import com.effigopracticeproject.learning_portal.dto.CourseRequestDto;
 import com.effigopracticeproject.learning_portal.dto.CourseResponseDto;
 import com.effigopracticeproject.learning_portal.entity.Course;
 import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
 import com.effigopracticeproject.learning_portal.exceptions.NoCourseFoundException;
+import com.effigopracticeproject.learning_portal.mapper.CourseRequestDtoMapper;
+import com.effigopracticeproject.learning_portal.mapper.CourseResponseDtoMapper;
 import com.effigopracticeproject.learning_portal.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -19,14 +23,16 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public Course createCourse(Long courseCategory, String description, Long price, String title) {
-        logger.info("Creating a new course with title: {}", title);
+    @Autowired
+    private CourseRequestDtoMapper courseRequestDtoMapper;
 
-        Course course = new Course();
-        course.setCourseCategory(courseCategory);
-        course.setDescription(description);
-        course.setPrice(price);
-        course.setTitle(title);
+    @Autowired
+    private CourseResponseDtoMapper courseResponseDtoMapper;
+
+    public Course createCourse(CourseRequestDto courseRequestDto) {
+        logger.info("Creating a new course with title: {}", courseRequestDto.getTitle());
+
+        Course course = courseRequestDtoMapper.courseRequestDtoToEntity(courseRequestDto);
 
         Course savedCourse = courseRepository.save(course);
         logger.info("Course created successfully with ID: {}", savedCourse.getCourseId());
@@ -41,13 +47,7 @@ public class CourseService {
                     .orElseThrow(() -> new NoCourseFoundException("No course found with ID: " + courseId));
 
             logger.info("Course details fetched successfully for ID: {}", courseId);
-            return new CourseResponseDto(
-                    course.getCourseId(),
-                    course.getCourseCategory(),
-                    course.getDescription(),
-                    course.getPrice(),
-                    course.getTitle()
-            );
+            return courseResponseDtoMapper.courseEntityToDto(course);
         }
         catch (NoCourseFoundException e) {
             logger.error("Exception: {}", e.getMessage());
@@ -69,28 +69,36 @@ public class CourseService {
         }
     }
 
-    public List<Course> getAllCourses() {
+    public List<CourseResponseDto> getAllCourses() {
         logger.info("Fetching all courses");
-        return courseRepository.findAll();
+
+        // Fetch all courses from the repository
+        List<Course> courses = courseRepository.findAll();
+
+        // Map each Course entity to a CourseResponseDto and return the list
+        return courses.stream()
+                .map(courseResponseDtoMapper::courseEntityToDto)
+                .collect(Collectors.toList());
     }
 
-    public Course updateCourseDetailsById(String courseId, Course updatedCourseDetails) {
+    public CourseResponseDto updateCourseDetailsById(String courseId, CourseRequestDto updatedCourseDto) {
         logger.info("Updating course with ID: {}", courseId);
 
         try {
-            Course courseToUpdate = courseRepository.findById(courseId)
+            // Find existing course by ID
+            Course existingCourse = courseRepository.findById(courseId)
                     .orElseThrow(() -> new NoCourseFoundException("No course found with ID: " + courseId));
 
-            courseToUpdate.setCourseCategory(updatedCourseDetails.getCourseCategory());
-            courseToUpdate.setDescription(updatedCourseDetails.getDescription());
-            courseToUpdate.setPrice(updatedCourseDetails.getPrice());
-            courseToUpdate.setTitle(updatedCourseDetails.getTitle());
+            // Map updated details to the existing course
+            Course updatedCourse = courseRequestDtoMapper.courseRequestDtoToEntity(updatedCourseDto);
+            updatedCourse.setCourseId(courseId); // Ensure the course ID is not lost
 
-            Course updatedCourse = courseRepository.save(courseToUpdate);
-            logger.info("Course updated successfully with ID: {}", updatedCourse.getCourseId());
-            return updatedCourse;
-        }
-        catch (NoCourseFoundException e) {
+            // Save the updated course
+            updatedCourse = courseRepository.save(updatedCourse);
+
+            // Map updated entity to DTO and return
+            return courseResponseDtoMapper.courseEntityToDto(updatedCourse);
+        } catch (NoCourseFoundException e) {
             logger.error("Exception: {}", e.getMessage());
             throw e;
         }

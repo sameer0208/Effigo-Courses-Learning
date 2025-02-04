@@ -6,6 +6,7 @@ import com.effigopracticeproject.learning_portal.dto.UserResponseDto;
 import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
 import com.effigopracticeproject.learning_portal.entity.User;
 import com.effigopracticeproject.learning_portal.exceptions.NoUserFoundException;
+import com.effigopracticeproject.learning_portal.mapper.UserRequestDtoMapper;
 import com.effigopracticeproject.learning_portal.mapper.UserResponseDtoMapper;
 import com.effigopracticeproject.learning_portal.repository.UserRepository;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -28,24 +30,18 @@ public class UserService {
     @Autowired
     private UserResponseDtoMapper userResponseDtoMapper;
 
-//    UserService(UserResponseDtoMapper userResponseDtoMapper){
-//        this.userResponseDtoMapper = userResponseDtoMapper;
-//    }
+    @Autowired
+    private UserRequestDtoMapper userRequestDtoMapper;
 
-
-    public User createUser(String username, String password, String userRole) {
-        logger.info("Creating a new user with username: {}", username);
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+        logger.info("Creating a new user with username: {}", userRequestDto.getUsername());
 
         try {
-            User user = new User();
-            user.setUserName(username);
-            user.setPassword(password);
-            user.setUserRole(userRole);
+            User user = userRequestDtoMapper.userRequestDtoToEntity(userRequestDto);
             user.setRegistrationDateTime(LocalDateTime.now());
-
             User savedUser = userRepository.save(user);
             logger.info("User saved successfully with ID:        {}", savedUser.getUserId());
-            return savedUser;
+            return userResponseDtoMapper.userEntityToDto(savedUser);
         } catch (Exception e) {
             logger.error("Error creating user: {}", e.getMessage());
             throw new RuntimeException("Error creating user", e);
@@ -59,11 +55,11 @@ public class UserService {
             if (optionalUser.isEmpty()) {
                 throw new NoUserFoundException("No User Found with given ID: " + userId);
             }
-
-            User user = optionalUser.get();
+//
+//            User user = optionalUser.get();
             logger.info("User fetched successfully with ID: {}", userId);
-            return new UserResponseDto(user.getUserId(), user.getUserName(), user.getUserRole(), user.getRegistrationDateTime(), user.getRegisteredCourses());
-
+//            return new UserResponseDto(user.getUserId(), user.getUserName(), user.getUserRole(), user.getRegistrationDateTime(), user.getRegisteredCourses());
+            return optionalUser.map(userResponseDtoMapper::userEntityToDto).orElse(null);
         } catch (NoUserFoundException e) {
             logger.warn(e.getMessage());
             throw e;
@@ -95,40 +91,31 @@ public class UserService {
         }
     }
 
-    public List<User> getAllUsers() {
+    public List<UserResponseDto> getAllUsers() {
         logger.info("Fetching all users");
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userResponseDtoMapper::userEntityToDto)
+                .collect(Collectors.toList());
     }
 
-    public User updateUserById(String userId, User updatedUserDetails) {
-        logger.info("Updating user with ID: {}", userId);
+    public UserResponseDto updateUserById(String userId, UserRequestDto userRequestDto) {
+        logger.info("Updating user details for ID: {}", userId);
 
-        try {
-            Optional<User> optionalUser = userRepository.findById(userId);
-            if (optionalUser.isEmpty()) {
-                throw new NoUserFoundException("No User Found with given ID: " + userId);
-            }
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NoUserFoundException("No user found with ID: " + userId));
 
-            User userToUpdate = optionalUser.get();
-            userToUpdate.setUserName(updatedUserDetails.getUserName());
-            userToUpdate.setPassword(updatedUserDetails.getPassword());
-            userToUpdate.setUserRole(updatedUserDetails.getUserRole());
+        // Map request DTO to user entity
+        User updatedUser = userRequestDtoMapper.userRequestDtoToEntity(userRequestDto);
+        updatedUser.setUserId(userId); // Ensure the ID remains unchanged
+        updatedUser.setRegistrationDateTime(existingUser.getRegistrationDateTime());
+        // Save the updated user
+        updatedUser = userRepository.save(updatedUser);
 
-            User updatedUser = userRepository.save(userToUpdate);
-            logger.info("User updated successfully with ID: {}", updatedUser.getUserId());
-            return updatedUser;
-        }
-        catch (NoUserFoundException e)
-        {
-            logger.warn(e.getMessage());
-            throw e;
-        }
-        catch (Exception e)
-        {
-            logger.error("Error updating user: {}", e.getMessage());
-            throw new RuntimeException("Error updating user", e);
-        }
+        // Convert updated entity to response DTO and return
+        return userResponseDtoMapper.userEntityToDto(updatedUser);
     }
+
 
     public List<RegisteredCourses> getRegisteredCoursesOfUser(String userId) {
         logger.info("Fetching registered courses for user ID: {}", userId);
@@ -151,5 +138,8 @@ public class UserService {
         }
     }
 
+    public List<User> getUsersByRole(String role) {
+        return userRepository.findAllByRole(role);
+    }
 
 }

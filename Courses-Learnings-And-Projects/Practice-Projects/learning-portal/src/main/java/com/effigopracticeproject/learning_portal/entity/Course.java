@@ -29,6 +29,6 @@ public class Course {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RegisteredCourses> registeredCourses;
 }

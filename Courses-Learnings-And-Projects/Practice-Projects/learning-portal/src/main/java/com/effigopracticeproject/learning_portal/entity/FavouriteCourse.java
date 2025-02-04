@@ -14,7 +14,7 @@ public class FavouriteCourse {
     @Column(name = "favourite_id")
     private String favouriteId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registration_id", nullable = false)
     private RegisteredCourses registeredCourses;
 }

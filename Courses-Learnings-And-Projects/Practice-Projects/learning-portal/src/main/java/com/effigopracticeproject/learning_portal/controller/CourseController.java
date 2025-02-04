@@ -27,12 +27,7 @@ public class CourseController {
     public ResponseEntity<Course> createCourse(@RequestBody CourseRequestDto courseRequestDto) {
         logger.info("Creating a new course with title: {}", courseRequestDto.getTitle());
         try {
-            Course createdCourse = courseService.createCourse(
-                    courseRequestDto.getCourseCategory(),
-                    courseRequestDto.getDescription(),
-                    courseRequestDto.getPrice(),
-                    courseRequestDto.getTitle()
-            );
+            Course createdCourse = courseService.createCourse(courseRequestDto);
             return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error creating course: {}", e.getMessage());
@@ -77,18 +72,20 @@ public class CourseController {
     }
 
     @GetMapping("/fetch-all-courses")
-    public ResponseEntity<List<Course>> getAllCourses() {
-        List<Course> courses = courseService.getAllCourses();
+    public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
+        List<CourseResponseDto> courses = courseService.getAllCourses();
         if (courses.isEmpty()) {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
+
     @PutMapping("/update/course-details/{id}")
-    public ResponseEntity<Course> updateCourseDetailsById(@PathVariable("id") String courseId, @RequestBody Course updatedCourseDetails) {
+    public ResponseEntity<CourseResponseDto> updateCourseDetailsById(
+            @PathVariable("id") String courseId, @RequestBody CourseRequestDto updatedCourseDetails) {
         try {
-            Course updatedCourse = courseService.updateCourseDetailsById(courseId, updatedCourseDetails);
+            CourseResponseDto updatedCourse = courseService.updateCourseDetailsById(courseId, updatedCourseDetails);
             return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
         } catch (NoCourseFoundException e) {
             logger.warn("No course found with ID: {}", courseId);

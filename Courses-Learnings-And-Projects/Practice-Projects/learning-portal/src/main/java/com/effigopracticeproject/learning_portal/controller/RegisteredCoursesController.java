@@ -83,4 +83,16 @@ public class RegisteredCoursesController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/fetch-by-user-and-course")
+    public ResponseEntity<List<RegisteredCourses>> getRegisteredCourses(
+            @RequestParam("userId") String userId,
+            @RequestParam("courseId") String courseId) {
+
+        logger.info("Received request to fetch registered courses for userId: {} and courseId: {}", userId, courseId);
+
+        List<RegisteredCourses> registeredCourses = registeredCoursesService.getRegisteredCourseByUserAndCourse(userId, courseId);
+
+        return new ResponseEntity<>(registeredCourses, HttpStatus.OK);
+    }
 }

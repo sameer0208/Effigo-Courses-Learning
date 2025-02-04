@@ -24,15 +24,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create-user")
-    public ResponseEntity<User> createUser(@RequestBody UserRequestDto userRequestDto)
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto)
     {
         logger.info("Creating a new user with username: {}", userRequestDto.getUsername());
         try {
-            User createdUser = userService.createUser(
-                    userRequestDto.getUsername(),
-                    userRequestDto.getPassword(),
-                    userRequestDto.getUserRole());
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+            UserResponseDto userResponseDto = userService.createUser(userRequestDto);
+            return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
         }
         catch (Exception e) {
             logger.error("Error creating user: {}", e.getMessage());
@@ -93,12 +90,13 @@ public class UserController {
     }
 
     @GetMapping("/fetch-all-users")
-    public ResponseEntity<List<User>> getAllUsers()
+    public ResponseEntity<List<UserResponseDto>> getAllUsers()
     {
         logger.info("Fetching all users");
         try
         {
-            List<User> users = userService.getAllUsers();
+            List<UserResponseDto> users = userService.getAllUsers();
+
             if (users.isEmpty()) {
                 return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
             }
@@ -111,11 +109,11 @@ public class UserController {
     }
 
     @PutMapping("/update/user-details/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable("id") String userId, @RequestBody User updateUserDetails)
+    public ResponseEntity<UserResponseDto> updateUserById(@PathVariable("id") String userId, @RequestBody UserRequestDto userRequestDto)
     {
         logger.info("Updating user with ID: {}", userId);
         try {
-            User updatedUser = userService.updateUserById(userId, updateUserDetails);
+            UserResponseDto updatedUser = userService.updateUserById(userId, userRequestDto);
             if (updatedUser != null) {
                 return new ResponseEntity<>(updatedUser, HttpStatus.OK);
             } else {
@@ -126,5 +124,14 @@ public class UserController {
             logger.error("Error updating user: {}", e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/fetch-by-role")
+    public ResponseEntity<List<User>> getUsersByRole(@RequestParam("role") String role) {
+        List<User> users = userService.getUsersByRole(role);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

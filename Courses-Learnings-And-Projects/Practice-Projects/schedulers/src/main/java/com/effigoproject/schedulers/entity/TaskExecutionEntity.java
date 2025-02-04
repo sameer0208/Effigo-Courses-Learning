@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "task_execution_logs")
+@Table(name = "task_execution_logs",schema = "public")
 public class TaskExecutionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

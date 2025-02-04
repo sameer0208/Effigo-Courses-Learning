@@ -6,9 +6,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Entity
 @Table(name ="users")
 public class User {
@@ -28,20 +25,20 @@ public class User {
     private String userRole;
 
     @Column(name = "username", nullable = false)
-    private String userName;
+    private String username;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RegisteredCourses> registeredCourses;
 
     public User() {
     }
 
-    public User(String userId, String password, LocalDateTime registrationDateTime, String userRole, String userName, List<RegisteredCourses> registeredCourses) {
+    public User(String userId, String password, LocalDateTime registrationDateTime, String userRole, String username, List<RegisteredCourses> registeredCourses) {
         this.userId = userId;
         this.password = password;
         this.registrationDateTime = registrationDateTime;
         this.userRole = userRole;
-        this.userName = userName;
+        this.username = username;
         this.registeredCourses = registeredCourses;
     }
 
@@ -77,12 +74,12 @@ public class User {
         this.userRole = userRole;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<RegisteredCourses> getRegisteredCourses() {
@@ -91,17 +88,5 @@ public class User {
 
     public void setRegisteredCourses(List<RegisteredCourses> registeredCourses) {
         this.registeredCourses = registeredCourses;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", registrationDateTime=" + registrationDateTime +
-                ", userRole='" + userRole + '\'' +
-                ", userName='" + userName + '\'' +
-                ", registeredCourses=" + registeredCourses +
-                '}';
     }
 }
