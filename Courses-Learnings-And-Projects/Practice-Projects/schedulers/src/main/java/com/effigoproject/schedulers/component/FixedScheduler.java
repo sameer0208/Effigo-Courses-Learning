@@ -1,18 +1,22 @@
 package com.effigoproject.schedulers.component;
 
-import ch.qos.logback.core.boolex.EvaluationException;
 import com.effigoproject.schedulers.service.NotificationScheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
-public class CronScheduler {
+import java.time.LocalTime;
 
+public class FixedScheduler {
 
     @Autowired
     private NotificationScheduler notificationScheduler;
 
-    @Scheduled(cron = "*/20 * * * * *", zone = "Asia/Kolkata")
-    public void loggingCronScheduler(){
-        notificationScheduler.logging();
+    @Scheduled(fixedRate = 5000) //sending notification after every 5 minutes
+    public void setReminder()
+    {
+        notificationScheduler.setReminder();
     }
+
 }
