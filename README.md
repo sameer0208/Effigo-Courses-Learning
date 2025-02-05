@@ -24,6 +24,8 @@ This repository serves as a collection of hands-on exercises, tutorials, and rea
 - **Database**: PostgreSQL
 - **Tools**: Maven, Postman, Git, IntelliJ IDEA
 
+## 📜 License
+This project is for learning purposes and is not intended for commercial use.
 ## 🛠 Setup & Installation
 
 1. Clone the repository:
