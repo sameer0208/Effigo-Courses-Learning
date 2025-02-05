@@ -28,4 +28,4 @@ This repository serves as a collection of hands-on exercises, tutorials, and rea
 
 1. Clone the repository:
    ```sh
-   [git clone https://github.com/your-username/your-repo.git](https://github.com/sameer0208/Effigo-Courses-Learning.git)
+   https://github.com/sameer0208/Effigo-Courses-Learning.git
