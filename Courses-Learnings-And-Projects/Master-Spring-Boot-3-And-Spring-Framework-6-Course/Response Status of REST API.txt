@@ -1,0 +1,11 @@
+Response Status of REST API
+
+404 -> Resource is not found
+500 -> Server Exception / Error
+400 -> Validation error
+
+200 -> Success
+201 -> Created
+204 -> No content
+401 -> Unauthorized (when authorization fails)
+400 -> Bad request (such as validation error)

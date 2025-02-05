@@ -1,0 +1,54 @@
+Docker
+What is Docker?
+Docker is a container platform that allows you to build, test and deploy applications quickly. A developer defines all the applications and it's dependencies in a Dockerfile which is then used to build Docker images that defines a Docker container. Doing this ensures that your application will run in any environment.
+
+In short - a platform for building, running and shipping applications
+
+CONTAINER						VIRTUAL MACHINE
+1. An isolated environment for 			An abstraction of a machine (physical
+running an application				hardware)
+
+Kernel - manages applications and hardware resources
+
+Docker image consists of:
+> A cut-down OS
+> A runtime environment 
+> Application files
+> Third-party libraries
+> Environment variables
+
+Dockers are PORTABLE and LIGHT WEIGHT
+
+Docker Image - is an executable file (having instruction in what way our container should be made)
+User one Image we can make multiple containers.
+Docker is basically like a static snapshot, what the code and the dependencies or what the local development environment is going to look like.
+
+We can relate Docker Image as class and Containers as its objects
+So container is basically like an instance of Docker Image.
+
+Commands:
+> docker pull <image> (e.g.<image> = hello-world) --> Download a docker image from Docker Hub.
+> docker run <image> --> Run a container from an image (creates and starts the container).
+> docker build -t springbootjarname . (to make docker image of a project)
+> docker image ls {it will show what docker image has)
+> docker run -p 9090:8080 springbootjarname (9090 is a docker port, and 8080 is a local port)
+> docker image ls / docker images(it will show whatever docker image we have)
+> docker logs containerId
+> docker ps (it shows the running container)
+> docker ps -a (it shows all the containers running or not running)
+> 
+For Spring boot project:
+> Create Dockerfile
+
+> FROM openjdk:17
+EXPOSE 8080
+ADD target/spring-boot-learning-portal-docker.jar spring-boot-learning-portal-docker.jar
+ENTRYPOINT ["java", "-jar", "/spring-boot-learning-portal-docker.jar"]
+
+> To create jar file go to pom.xml and in that in the build tag add the line
+<finalName>spring-boot-learning-portal-docker</finalName>
+
+> then open cmd and give command to create a docker image:  docker build -t spring-boot-learning-portal-docker.jar .
+
+> To run the docker image run the command:
+ docker run -p 9090:8080 spring-boot-learning-portal-docker.jar (docker image name)
