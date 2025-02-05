@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"nitish\",\r\n    \"password\": \"nitish_up_wala\",\r\n    \"userRole\": \"USER\"\r\n}",
+							"raw": "{\r\n    \"username\": \"Einstein\",\r\n    \"password\": \"e=mc2\",\r\n    \"userRole\": \"USER\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,7 +46,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/users/fetch-user/b0e706f8-9783-49be-910b-a306204de97b",
+							"raw": "http://localhost:8080/learning-portal/users/fetch-user/bce7d5bb-15c1-4797-84bf-af286ee7b1a6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -56,7 +56,7 @@
 								"learning-portal",
 								"users",
 								"fetch-user",
-								"b0e706f8-9783-49be-910b-a306204de97b"
+								"bce7d5bb-15c1-4797-84bf-af286ee7b1a6"
 							]
 						}
 					},
@@ -90,7 +90,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\":\"sophiyan\",\r\n    \"password\":\"sophiyan_0901\",\r\n    \"userRole\":\"USER\"\r\n}",
+							"raw": "{\r\n    \"username\":\"sophiyan\",\r\n    \"password\":\"sophiyan_0901\",\r\n    \"userRole\":\"USER\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -98,7 +98,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/users/update/user-details/3c3163cb-e9af-4e99-8471-bcedc65ffea2",
+							"raw": "http://localhost:8080/learning-portal/users/update/user-details/3c8e3d66-0db6-4b46-a239-1568785583a9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -109,7 +109,7 @@
 								"users",
 								"update",
 								"user-details",
-								"3c3163cb-e9af-4e99-8471-bcedc65ffea2"
+								"3c8e3d66-0db6-4b46-a239-1568785583a9"
 							]
 						}
 					},
@@ -121,7 +121,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/users/delete-user/b0e706f8-9783-49be-910b-a306204de97b",
+							"raw": "http://localhost:8080/learning-portal/users/delete-user/3c8e3d66-0db6-4b46-a239-1568785583a9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -131,7 +131,7 @@
 								"learning-portal",
 								"users",
 								"delete-user",
-								"b0e706f8-9783-49be-910b-a306204de97b"
+								"3c8e3d66-0db6-4b46-a239-1568785583a9"
 							]
 						}
 					},
@@ -143,7 +143,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/users/fetch-user-registered-course/0914348a-8cc5-4843-bb65-9c8d2c1bc9fa",
+							"raw": "http://localhost:8080/learning-portal/users/fetch-user-registered-course/3c8e3d66-0db6-4b46-a239-1568785583a9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -153,7 +153,34 @@
 								"learning-portal",
 								"users",
 								"fetch-user-registered-course",
-								"0914348a-8cc5-4843-bb65-9c8d2c1bc9fa"
+								"3c8e3d66-0db6-4b46-a239-1568785583a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-user-by-role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/users/fetch-by-role?role=USER",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"users",
+								"fetch-by-role"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "USER"
+								}
 							]
 						}
 					},
@@ -201,7 +228,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/courses/fetch-course/db5e8f1d-4d0d-4818-94f4-8090fe730dde",
+							"raw": "http://localhost:8080/learning-portal/courses/fetch-course/f941143f-1d85-4e9a-9922-057dd459690c",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -211,7 +238,7 @@
 								"learning-portal",
 								"courses",
 								"fetch-course",
-								"db5e8f1d-4d0d-4818-94f4-8090fe730dde"
+								"f941143f-1d85-4e9a-9922-057dd459690c"
 							]
 						}
 					},
@@ -253,7 +280,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/courses/update/course-details/eadd60be-1e99-4aaa-b964-ac5845d92ae8",
+							"raw": "http://localhost:8080/learning-portal/courses/update/course-details/b139b387-9f06-4e91-a5ae-0bd5dda839d3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -264,7 +291,7 @@
 								"courses",
 								"update",
 								"course-details",
-								"eadd60be-1e99-4aaa-b964-ac5845d92ae8"
+								"b139b387-9f06-4e91-a5ae-0bd5dda839d3"
 							]
 						}
 					},
@@ -305,7 +332,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"user\": {\r\n    \"userId\": \"3c3163cb-e9af-4e99-8471-bcedc65ffea2\"\r\n  },\r\n  \"course\": {\r\n    \"courseId\": \"23381c3d-e3a0-445b-b8a5-df54f4969421\"\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"user\": {\r\n    \"userId\": \"ba4cb8cd-8837-423e-9b21-d25328b83993\"\r\n  },\r\n  \"course\": {\r\n    \"courseId\": \"f941143f-1d85-4e9a-9922-057dd459690c\"\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -334,7 +361,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/learning-portal/registered-courses/fetch-registered-course/ab871468-6767-4650-853c-a6a62c7b8829",
+							"raw": "http://localhost:8080/learning-portal/registered-courses/fetch-registered-course/d494f67e-80a1-4804-b487-af48c5485644",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -344,7 +371,7 @@
 								"learning-portal",
 								"registered-courses",
 								"fetch-registered-course",
-								"ab871468-6767-4650-853c-a6a62c7b8829"
+								"d494f67e-80a1-4804-b487-af48c5485644"
 							]
 						}
 					},
@@ -423,6 +450,37 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get-registeredcourse-by-userid-courseid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/learning-portal/registered-courses/fetch-by-user-and-course?userId=d97b2511-a2df-441d-828a-2aac81da3478&courseId=f941143f-1d85-4e9a-9922-057dd459690c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"learning-portal",
+								"registered-courses",
+								"fetch-by-user-and-course"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "d97b2511-a2df-441d-828a-2aac81da3478"
+								},
+								{
+									"key": "courseId",
+									"value": "f941143f-1d85-4e9a-9922-057dd459690c"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"description": "This section contains following actions:\n\n1. Create Registered Courses\n    \n2. Get Registered Course Details By ID\n    \n3. Get All Registered Courses Details\n    \n4. Update Registered Course Details By ID\n    \n5. Delete Registered Course Details By ID"
@@ -437,7 +495,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"registeredCourses\": {\r\n    \"registrationId\": \"ab871468-6767-4650-853c-a6a62c7b8829\"\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"registeredCourses\": {\r\n    \"registrationId\": \"92a03951-d0a1-49fd-b7c7-49a5c16dc928\"\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
