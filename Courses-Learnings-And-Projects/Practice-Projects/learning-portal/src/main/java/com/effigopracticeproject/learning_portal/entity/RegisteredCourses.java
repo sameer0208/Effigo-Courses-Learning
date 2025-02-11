@@ -1,8 +1,12 @@
 package com.effigopracticeproject.learning_portal.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,13 +19,17 @@ public class RegisteredCourses {
     @Column(name = "registration_id", nullable = false)
     private String registrationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.EAGER)
+    @JsonBackReference
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
+    @OneToMany(mappedBy = "registeredCourses", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<FavouriteCourse> favouriteCourses;
 
 }

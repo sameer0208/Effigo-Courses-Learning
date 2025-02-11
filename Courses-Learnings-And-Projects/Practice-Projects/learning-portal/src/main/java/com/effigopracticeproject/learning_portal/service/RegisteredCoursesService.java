@@ -1,8 +1,13 @@
 package com.effigopracticeproject.learning_portal.service;
 
+import com.effigopracticeproject.learning_portal.dto.RegisteredCoursesResponseDto;
+import com.effigopracticeproject.learning_portal.entity.Course;
 import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
+import com.effigopracticeproject.learning_portal.entity.User;
 import com.effigopracticeproject.learning_portal.exceptions.NoRegisteredCourseFoundException;
+import com.effigopracticeproject.learning_portal.repository.CourseRepository;
 import com.effigopracticeproject.learning_portal.repository.RegisteredCoursesRepository;
+import com.effigopracticeproject.learning_portal.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,53 +24,96 @@ public class RegisteredCoursesService {
     @Autowired
     private RegisteredCoursesRepository registeredCoursesRepository;
 
-    public RegisteredCourses addRegisteredCourse(RegisteredCourses registeredCourses) {
-        try {
-            logger.info("Registering course for user ID: {}, course ID: {}",
-                    registeredCourses.getUser().getUserId(),
-                    registeredCourses.getCourse().getCourseId());
+    @Autowired
+    private UserRepository userRepository;
 
-            RegisteredCourses savedRegisteredCourse = registeredCoursesRepository.save(registeredCourses);
-            logger.info("Course registered successfully with registration ID: {}", savedRegisteredCourse.getRegistrationId());
-            return savedRegisteredCourse;
-        } catch (Exception e) {
-            logger.error("Error occurred while registering course: {}", e.getMessage(), e);
-            throw new RuntimeException("Error occurred while registering course: " + e.getMessage());
+    @Autowired
+    private CourseRepository courseRepository;
+
+//    public RegisteredCourses addRegisteredCourse(RegisteredCourses registeredCourses) {
+//        try {
+//            if (registeredCourses.getUser() == null || registeredCourses.getUser().getUserId() == null) {
+//                throw new IllegalArgumentException("User ID cannot be null");
+//            }
+//            if (registeredCourses.getCourse() == null || registeredCourses.getCourse().getCourseId() == null) {
+//                throw new IllegalArgumentException("Course ID cannot be null");
+//            }
+//
+//            // Manually set User and Course to prevent null issues
+//            User user = new User();
+//            user.setUserId(registeredCourses.getUser().getUserId());
+//
+//            Course course = new Course();
+//            course.setCourseId(registeredCourses.getCourse().getCourseId());
+//
+//            registeredCourses.setUser(user);
+//            registeredCourses.setCourse(course);
+//
+//            RegisteredCourses savedRegisteredCourse = registeredCoursesRepository.save(registeredCourses);
+//            return savedRegisteredCourse;
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error occurred while registering course: " + e.getMessage(), e);
+//        }
+//    }
+public RegisteredCourses addRegisteredCourse(RegisteredCourses registeredCourses) {
+    try {
+        if (registeredCourses.getUser() == null || registeredCourses.getUser().getUserId() == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
         }
+        if (registeredCourses.getCourse() == null || registeredCourses.getCourse().getCourseId() == null) {
+            throw new IllegalArgumentException("Course ID cannot be null");
+        }
+
+        // Fetch user from DB to make sure it's managed by JPA
+        User user = userRepository.findById(registeredCourses.getUser().getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + registeredCourses.getUser().getUserId()));
+
+        // Fetch course from DB to make sure it's managed by JPA
+        Course course = courseRepository.findById(registeredCourses.getCourse().getCourseId())
+                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + registeredCourses.getCourse().getCourseId()));
+
+        // Attach user and course to the registeredCourses object
+        registeredCourses.setUser(user);
+        registeredCourses.setCourse(course);
+
+        // Persist the entity
+        RegisteredCourses savedRegisteredCourse = registeredCoursesRepository.save(registeredCourses);
+        return savedRegisteredCourse;
+    } catch (Exception e) {
+        throw new RuntimeException("Error occurred while registering course: " + e.getMessage(), e);
+    }
+}
+    public RegisteredCoursesResponseDto getRegisteredCourseById(String registeredCourseId) {
+        logger.info("Fetching registered course with ID: {}", registeredCourseId);
+
+        RegisteredCourses registeredCourse = registeredCoursesRepository.findById(registeredCourseId)
+                .orElseThrow(() -> new NoRegisteredCourseFoundException("No registered course found with ID: " + registeredCourseId));
+
+        return new RegisteredCoursesResponseDto(
+                registeredCourse.getRegistrationId(),
+                registeredCourse.getUser().getUserId(),
+                registeredCourse.getUser().getUsername(), // ✅ Fetch username
+                registeredCourse.getCourse().getCourseId(),
+                registeredCourse.getCourse().getTitle()
+        );
     }
 
-    public Optional<RegisteredCourses> getRegisteredCourseById(String registeredCourseId) {
-        try {
-            logger.info("Fetching registered course with ID: {}", registeredCourseId);
 
-            Optional<RegisteredCourses> registeredCourse = registeredCoursesRepository.findById(registeredCourseId);
-            if (registeredCourse.isEmpty()) {
-                logger.warn("No registered course found with ID: {}", registeredCourseId);
-                throw new NoRegisteredCourseFoundException("No registered course found with ID: " + registeredCourseId);
-            }
+    public List<RegisteredCoursesResponseDto> getAllRegisteredCourses() {
+        logger.info("Fetching all registered courses");
+        List<RegisteredCourses> registeredCoursesList = registeredCoursesRepository.findAll();
 
-            logger.info("Successfully fetched registered course with ID: {}", registeredCourseId);
-            return registeredCourse;
-        } catch (NoRegisteredCourseFoundException e) {
-            logger.warn("No registered course found with ID: {}", registeredCourseId);
-            throw e; // Re-throwing the custom exception after logging
-        } catch (Exception e) {
-            logger.error("Error occurred while fetching registered course by ID: {}", e.getMessage(), e);
-            throw new RuntimeException("Error occurred while fetching registered course by ID: " + e.getMessage());
-        }
+        return registeredCoursesList.stream().map(registeredCourse ->
+                new RegisteredCoursesResponseDto(
+                        registeredCourse.getRegistrationId(),
+                        registeredCourse.getUser().getUserId(),
+                        registeredCourse.getUser().getUsername(), // ✅ Fetch username
+                        registeredCourse.getCourse().getCourseId(),
+                        registeredCourse.getCourse().getTitle() // ✅ Fetch course title
+                )).toList();
     }
 
-    public List<RegisteredCourses> getAllRegisteredCourses() {
-        try {
-            logger.info("Fetching all registered courses");
-            List<RegisteredCourses> registeredCoursesList = registeredCoursesRepository.findAll();
-            logger.info("Fetched {} registered courses successfully", registeredCoursesList.size());
-            return registeredCoursesList;
-        } catch (Exception e) {
-            logger.error("Error occurred while fetching all registered courses: {}", e.getMessage(), e);
-            throw new RuntimeException("Error occurred while fetching all registered courses: " + e.getMessage());
-        }
-    }
+
 
     public void deleteRegisteredCourseById(String registeredCourseId) {
         try {

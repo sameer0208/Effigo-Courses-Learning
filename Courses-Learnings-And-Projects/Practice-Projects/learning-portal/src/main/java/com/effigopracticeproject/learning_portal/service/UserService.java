@@ -13,6 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+import java.security.NoSuchAlgorithmException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,22 +39,69 @@ public class UserService {
     @Autowired
     private UserRequestDtoMapper userRequestDtoMapper;
 
-    public UserResponseDto createUser(UserRequestDto userRequestDto) {
-        logger.info("Creating a new user with username: {}", userRequestDto.getUsername());
+    private static final String AES_KEY = "MySuperSecretKey"; // Must be 16 bytes for AES-128
 
+    // AES Encryption Method
+    private String encryptPassword(String password) {
         try {
-            User user = userRequestDtoMapper.userRequestDtoToEntity(userRequestDto);
-            user.setRegistrationDateTime(LocalDateTime.now());
-            User savedUser = userRepository.save(user);
-            logger.info("User saved successfully with ID:        {}", savedUser.getUserId());
-            return userResponseDtoMapper.userEntityToDto(savedUser);
+            SecretKey secretKey = new SecretKeySpec(AES_KEY.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] encryptedBytes = cipher.doFinal(password.getBytes());
+            return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
-            logger.error("Error creating user: {}", e.getMessage());
-            throw new RuntimeException("Error creating user", e);
+            throw new RuntimeException("Error encrypting password", e);
         }
     }
 
-    public UserResponseDto getUserById(String userId) {
+    // AES Decryption Method
+    private String decryptPassword(String encryptedPassword) {
+        try {
+            SecretKey secretKey = new SecretKeySpec(AES_KEY.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedPassword));
+            return new String(decryptedBytes);
+        } catch (Exception e) {
+            throw new RuntimeException("Error decrypting password", e);
+        }
+    }
+
+//    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+//        logger.info("Creating a new user with username: {}", userRequestDto.getUsername());
+//
+//        try {
+//            User user = userRequestDtoMapper.userRequestDtoToEntity(userRequestDto);
+//            user.setRegistrationDateTime(LocalDateTime.now());
+//            User savedUser = userRepository.save(user);
+//            logger.info("User saved successfully with ID:        {}", savedUser.getUserId());
+//            return userResponseDtoMapper.userEntityToDto(savedUser);
+//        } catch (Exception e) {
+//            logger.error("Error creating user: {}", e.getMessage());
+//            throw new RuntimeException("Error creating user", e);
+//        }
+//    }
+public UserResponseDto createUser(UserRequestDto userRequestDto) {
+    logger.info("Creating a new user with username: {}", userRequestDto.getUsername());
+
+    try {
+        User user = userRequestDtoMapper.userRequestDtoToEntity(userRequestDto);
+
+        // Encrypt the password before saving
+        user.setPassword(encryptPassword(userRequestDto.getPassword()));
+
+        user.setRegistrationDateTime(LocalDateTime.now());
+        User savedUser = userRepository.save(user);
+        logger.info("User saved successfully with ID: {}", savedUser.getUserId());
+
+        return userResponseDtoMapper.userEntityToDto(savedUser);
+    } catch (Exception e) {
+        logger.error("Error creating user: {}", e.getMessage());
+        throw new RuntimeException("Error creating user", e);
+    }
+}
+
+   /* public UserResponseDto getUserById(String userId) {
         logger.info("Fetching user with ID: {}", userId);
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
@@ -67,6 +120,36 @@ public class UserService {
             logger.error("Unexpected error while fetching user: {}", e.getMessage());
             throw new RuntimeException("Error fetching user details", e);
         }
+    }*/
+
+    public UserResponseDto getUserById(String userId) {
+        logger.info("Fetching user with ID: {}", userId);
+
+        try {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isEmpty()) {
+                throw new NoUserFoundException("No User Found with given ID: " + userId);
+            }
+
+            User user = optionalUser.get();
+
+            // Decrypt the password before returning (Optional: You may decide to exclude passwords)
+            String decryptedPassword = decryptPassword(user.getPassword());
+
+            return new UserResponseDto(
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getUserRole(),
+                    user.getRegistrationDateTime(),
+                    user.getRegisteredCourses()
+            );
+        } catch (NoUserFoundException e) {
+            logger.warn(e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            logger.error("Unexpected error while fetching user: {}", e.getMessage());
+            throw new RuntimeException("Error fetching user details", e);
+        }
     }
 
     public void deleteUserById(String userId) {
@@ -76,6 +159,9 @@ public class UserService {
             if (!userRepository.existsById(userId)) {
                 throw new NoUserFoundException("No User Found with given ID: " + userId);
             }
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new NoUserFoundException("No User Found with given ID: " + userId));
+            user.getRegisteredCourses().clear();
             userRepository.deleteById(userId);
             logger.info("User deleted successfully with ID: {}", userId);
         }

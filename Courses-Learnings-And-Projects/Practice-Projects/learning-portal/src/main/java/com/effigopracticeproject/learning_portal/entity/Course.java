@@ -1,5 +1,6 @@
 package com.effigopracticeproject.learning_portal.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class Course {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<RegisteredCourses> registeredCourses;
 }

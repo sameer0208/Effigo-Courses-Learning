@@ -1,0 +1,85 @@
+
+.home-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    top: -30px;
+  }
+  
+  /* Background Video */
+  .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  .logo-img {
+    width: 200px; /* Adjust size */
+    height: auto;
+    margin: 10px 0; /* Add some space */
+    box-shadow: 2px 2px 2px white;
+  }
+  
+  /* Dark Overlay to Improve Text Visibility */
+  /* Dark Overlay to Improve Text Visibility */
+  .overlay {
+    position: absolute;
+    top: 45%; /* Moves the overlay content down */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers the content */
+    width: 80%; /* Adjust width for better layout */
+    max-height: 90%; /* Prevents it from touching the bottom */
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px yellow;
+}
+  
+  /* Main Title */
+  .title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  /* Subtitle */
+  .subtitle {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+  
+  /* Features Section */
+  .features {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Feature Box */
+  .feature {
+    text-align: center;
+    padding: 20px;
+    color: white;
+  }
+  
+  /* Feature Icons */
+  .feature-icon {
+    font-size: 3rem;
+    color: #ffc107; /* Gold color */
+    margin-bottom: 10px;
+  }
+  

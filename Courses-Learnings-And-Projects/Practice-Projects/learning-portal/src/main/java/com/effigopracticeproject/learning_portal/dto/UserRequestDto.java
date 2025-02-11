@@ -1,6 +1,7 @@
 package com.effigopracticeproject.learning_portal.dto;
 
 import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 public class UserRequestDto {
     private String userId;
+    @JsonProperty("username")
     private String username;
+    @JsonProperty("password")
     private String password;
+    @JsonProperty("userRole")
     private String userRole;
+    @JsonProperty("registrationDateTime")
     private LocalDateTime registrationDateTime;
-    private List<RegisteredCourses> registeredCourses;
+//    private List<RegisteredCourses> registeredCourses;
 }

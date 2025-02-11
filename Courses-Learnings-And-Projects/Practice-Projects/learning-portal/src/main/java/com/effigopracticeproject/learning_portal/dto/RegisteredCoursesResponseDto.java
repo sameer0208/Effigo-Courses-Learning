@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class RegisteredCoursesResponseDto {
     private String registrationId;
     private String userId;
+    private String username; // ✅ Added
     private String courseId;
+    private String courseTitle; // ✅ Added
 }

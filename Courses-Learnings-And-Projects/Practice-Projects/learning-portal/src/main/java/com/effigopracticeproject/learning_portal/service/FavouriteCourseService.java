@@ -1,7 +1,12 @@
 package com.effigopracticeproject.learning_portal.service;
 
+import com.effigopracticeproject.learning_portal.dto.FavouriteCourseDto;
+import com.effigopracticeproject.learning_portal.dto.FavouriteCourseRequestDto;
+import com.effigopracticeproject.learning_portal.dto.FavouriteCourseResponseDto;
 import com.effigopracticeproject.learning_portal.entity.FavouriteCourse;
 import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
+import com.effigopracticeproject.learning_portal.exceptions.NoFavouriteCourseFoundException;
+import com.effigopracticeproject.learning_portal.exceptions.NoRegisteredCourseFoundException;
 import com.effigopracticeproject.learning_portal.repository.FavouriteCourseRepository;
 import com.effigopracticeproject.learning_portal.repository.RegisteredCoursesRepository;
 import org.slf4j.Logger;
@@ -10,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FavouriteCourseService {
@@ -22,77 +28,65 @@ public class FavouriteCourseService {
     @Autowired
     private RegisteredCoursesRepository registeredCoursesRepository;
 
-    public FavouriteCourse addFavouriteCourse(FavouriteCourse favouriteCourse) {
-        try {
-            FavouriteCourse savedFavouriteCourse = favouriteCourseRepository.save(favouriteCourse);
-            logger.info("Favourite course added successfully with ID: {}", savedFavouriteCourse.getFavouriteId());
-            return savedFavouriteCourse;
-        } catch (Exception e) {
-            logger.error("Error occurred while adding favourite course: {}", e.getMessage(), e);
-            throw new RuntimeException("Error occurred while adding favourite course: " + e.getMessage());
-        }
+    public FavouriteCourse addFavouriteCourse(FavouriteCourseRequestDto requestDto) {
+        logger.info("Adding favourite course for registered course ID: {}", requestDto.getRegisteredCourseId());
+
+        RegisteredCourses registeredCourses = registeredCoursesRepository.findById(requestDto.getRegisteredCourseId())
+                .orElseThrow(() -> {
+                    logger.warn("No registered course found with ID: {}", requestDto.getRegisteredCourseId());
+                    return new NoRegisteredCourseFoundException("No registered course found with ID: " + requestDto.getRegisteredCourseId());
+                });
+
+        FavouriteCourse favouriteCourse = new FavouriteCourse();
+        favouriteCourse.setRegisteredCourses(registeredCourses);
+
+        FavouriteCourse createdFavouriteCourse = favouriteCourseRepository.save(favouriteCourse);
+        return createdFavouriteCourse;
     }
 
-    public FavouriteCourse getFavouriteCourseById(String favouriteCourseId) {
-        try {
-            FavouriteCourse favouriteCourse = favouriteCourseRepository.findById(favouriteCourseId).orElse(null);
-            if (favouriteCourse == null) {
-                logger.warn("No favourite course found with ID: {}", favouriteCourseId);
-            }
-            return favouriteCourse;
-        } catch (Exception e) {
-            logger.error("Error occurred while fetching favourite course by ID: {}", e.getMessage(), e);
-            throw new RuntimeException("Error occurred while fetching favourite course by ID: " + e.getMessage());
-        }
+    public FavouriteCourseResponseDto getFavouriteCourseById(String favouriteId) {
+        logger.info("Fetching favourite course with ID: {}", favouriteId);
+
+        FavouriteCourse favouriteCourse = favouriteCourseRepository.findById(favouriteId)
+                .orElseThrow(() -> new NoFavouriteCourseFoundException("No favourite course found with ID: " + favouriteId));
+
+        return new FavouriteCourseResponseDto(
+                favouriteCourse.getFavouriteId(),
+                favouriteCourse.getRegisteredCourses().getRegistrationId()
+        );
     }
 
-    public List<FavouriteCourse> getAllFavouriteCourses() {
-        try {
-            List<FavouriteCourse> favouriteCourses = favouriteCourseRepository.findAll();
-            logger.info("Fetched {} favourite courses successfully", favouriteCourses.size());
-            return favouriteCourses;
-        } catch (Exception e) {
-            logger.error("Error occurred while fetching all favourite courses: {}", e.getMessage(), e);
-            throw new RuntimeException("Error occurred while fetching all favourite courses: " + e.getMessage());
-        }
+    public List<FavouriteCourseDto> getAllFavouriteCourses() {
+        List<FavouriteCourse> favouriteCourses = favouriteCourseRepository.findAll();
+
+        return favouriteCourses.stream().map(fav -> {
+            String registeredCourseId = fav.getRegisteredCourses().getRegistrationId();
+
+            // Fetch RegisteredCourse from DB
+            RegisteredCourses registeredCourse = registeredCoursesRepository.findById(registeredCourseId).orElse(null);
+
+            String username = (registeredCourse != null && registeredCourse.getUser() != null)
+                    ? registeredCourse.getUser().getUsername()
+                    : "Unknown User";
+
+            String courseTitle = (registeredCourse != null && registeredCourse.getCourse() != null)
+                    ? registeredCourse.getCourse().getTitle()
+                    : "Unknown Course";
+
+            return new FavouriteCourseDto(fav.getFavouriteId(), registeredCourse.getRegistrationId(), username, courseTitle);
+        }).collect(Collectors.toList());
     }
 
-    public void deleteFavouriteCourseById(String favouriteCourseId) {
-        try {
-            if (!favouriteCourseRepository.existsById(favouriteCourseId)) {
-                logger.warn("No favourite course found with ID: {}", favouriteCourseId);
-                return;
-            }
-            favouriteCourseRepository.deleteById(favouriteCourseId);
-            logger.info("Favourite course deleted successfully with ID: {}", favouriteCourseId);
-        } catch (Exception e) {
-            logger.error("Error occurred while deleting favourite course with ID: {}", favouriteCourseId, e);
-            throw new RuntimeException("Error occurred while deleting favourite course with ID: " + favouriteCourseId + ": " + e.getMessage());
+
+    public void deleteFavouriteCourseById(String favouriteId) {
+        logger.info("Deleting favourite course with ID: {}", favouriteId);
+
+        if (!favouriteCourseRepository.existsById(favouriteId)) {
+            logger.warn("No favourite course found with ID: {}", favouriteId);
+            throw new NoFavouriteCourseFoundException("No favourite course found with ID: " + favouriteId);
         }
-    }
 
-    public FavouriteCourse updateFavouriteCourseById(String favouriteCourseId, FavouriteCourse favouriteCourseUpdateDetails) {
-        try {
-            FavouriteCourse favouriteCourseToUpdate = favouriteCourseRepository.findById(favouriteCourseId).orElse(null);
-            if (favouriteCourseToUpdate == null) {
-                logger.warn("No favourite course found with ID: {}", favouriteCourseId);
-                throw new RuntimeException("No favourite course found with ID: " + favouriteCourseId);
-            }
-
-            RegisteredCourses registeredCourses = registeredCoursesRepository.findById(favouriteCourseUpdateDetails.getRegisteredCourses().getRegistrationId()).orElse(null);
-            if (registeredCourses == null) {
-                logger.warn("No registered course found with ID: {}", favouriteCourseUpdateDetails.getRegisteredCourses().getRegistrationId());
-                throw new RuntimeException("No registered course found with ID: " + favouriteCourseUpdateDetails.getRegisteredCourses().getRegistrationId());
-            }
-
-            favouriteCourseToUpdate.setRegisteredCourses(registeredCourses);
-
-            FavouriteCourse updatedFavouriteCourse = favouriteCourseRepository.save(favouriteCourseToUpdate);
-            logger.info("Favourite course updated successfully with ID: {}", updatedFavouriteCourse.getFavouriteId());
-            return updatedFavouriteCourse;
-        } catch (Exception e) {
-            logger.error("Error occurred while updating favourite course with ID: {}", favouriteCourseId, e);
-            throw new RuntimeException("Error occurred while updating favourite course with ID: " + favouriteCourseId + ": " + e.getMessage());
-        }
+        favouriteCourseRepository.deleteById(favouriteId);
+        logger.info("Favourite course deleted successfully");
     }
 }

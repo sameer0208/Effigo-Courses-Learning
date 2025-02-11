@@ -1,3 +1,26 @@
+#logging:
+#  level:
+#    org:
+#      springframework: debug
+#
+#spring:
+#  datasource:
+#    dbcp2:
+#      driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/learning_portal
+#    username: postgres
+#    password: sameer
+#
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+
+
 logging:
   level:
     org:
@@ -7,7 +30,7 @@ spring:
   datasource:
     dbcp2:
       driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/learning_portal
+    url: jdbc:postgresql://postgres_db:5432/learning_portal  # <-- Updated for Docker
     username: postgres
     password: sameer
 

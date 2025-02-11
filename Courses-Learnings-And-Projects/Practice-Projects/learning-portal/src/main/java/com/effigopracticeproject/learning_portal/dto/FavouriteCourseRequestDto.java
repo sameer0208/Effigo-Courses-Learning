@@ -8,12 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavouriteCourseRequestDto {
-    private RegisteredCoursesDto registeredCourses;
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class RegisteredCoursesDto {
-    private String registrationId;
+    private String registeredCourseId;
 }

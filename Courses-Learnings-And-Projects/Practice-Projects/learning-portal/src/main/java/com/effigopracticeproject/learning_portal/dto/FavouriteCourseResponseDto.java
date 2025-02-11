@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FavouriteCourseResponseDto {
     private String favouriteId;
-    private String registrationId;
+    private String registeredCourseId;
 }
