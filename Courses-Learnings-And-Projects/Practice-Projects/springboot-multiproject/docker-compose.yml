@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for data-receiver
+  data-receiver-db:
+    image: postgres:15
+    container_name: data-receiver-db
+    environment:
+      POSTGRES_DB: data-receiver-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sameer
+    ports:
+      - "5434:5432"
+    networks:
+      - spring-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d data-receiver-db"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  # Data Receiver Service
+  data-receiver-service:
+    build: ./data-receiver
+    container_name: data-receiver-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      data-receiver-db:
+        condition: service_healthy
+    networks:
+      - spring-network
+
+  # Data Fetcher Service
+  data-fetcher-service:
+    build: ./data-fetcher
+    container_name: data-fetcher-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      data-receiver-service:
+        condition: service_started
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+    driver: bridge

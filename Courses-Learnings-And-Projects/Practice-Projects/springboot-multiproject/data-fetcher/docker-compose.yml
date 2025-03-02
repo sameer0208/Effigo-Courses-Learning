@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  data-fetcher:
+    build:
+      context: .  # Adjust path to your app1 directory
+      dockerfile: Dockerfile
+    container_name: data-fetcher
+    ports:
+      - "8083:8080"  # Map app1's internal port 8085 to 8084 on the host
+    environment:
+      - DATA_RECEIVER_URL=http://data-receiver:8081  # Reference app2's URL on the shared network
+    networks:
+      - spring-network  # Use the external shared network
+
+networks:
+  spring-network:
+    external: true
