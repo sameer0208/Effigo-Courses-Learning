@@ -1,0 +1,6 @@
+#Command to run zookeeper:
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+
+#Command to run server:
+.\bin\windows\kafka-server-start.bat .\config\server.properties
