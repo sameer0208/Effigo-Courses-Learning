@@ -12,8 +12,13 @@ import java.time.LocalTime;
 @RestController
 @RequestMapping("/scheduler")
 public class SchedulerController {
-    @Autowired
+
     private DynamicScheduler dynamicScheduler;
+
+    public SchedulerController(DynamicScheduler dynamicScheduler)
+    {
+        this.dynamicScheduler = dynamicScheduler;
+    }
 
     @PostMapping("/start")
     public String startScheduler()

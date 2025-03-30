@@ -9,7 +9,7 @@ const CourseSections = () => {
 <h3>Course Management</h3>
 <Row>
   <Col sm={12} md={4}>
-    <Button variant="primary" href="/courses/add-user" className="w-100">
+    <Button variant="primary" href="/courses/add-course" className="w-100">
       <i className="fas fa-user-plus"></i> Add Course
     </Button>
   </Col>

@@ -1,0 +1,86 @@
+spring:
+  application:
+    name: transaction-producer
+
+  datasource:
+    dbcp2:
+      driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://training1.effigo.in:5432/training_2
+    username: upeg
+    password: sillicon
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092} # Environment variable support
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+kafka:
+  topic:
+    main: master-item-topic
+    fallback: fallback-topic
+  bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+
+app:
+  kafka:
+    topic:
+      master-item: master-item-topic
+      fallback: fallback-topic
+
+logging:
+  level:
+    org.springframework: debug
+    com.effigoproject.transactionproducer: DEBUG
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG
+
+---
+# Docker-specific configuration (auto-applied via 'docker' profile)
+spring:
+  config:
+    activate:
+      on-profile: docker
+  kafka:
+    bootstrap-servers: kafka:9092
+
+
+#spring:
+#  application:
+#    name: transaction-producer
+#
+#  datasource:
+#    url: jdbc:postgresql://training1.effigo.in:5432/training_2
+#    driver-class-name: org.postgresql.Driver
+#    username: upeg
+#    password: sillicon
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#  kafka:
+#    bootstrap-servers: kafka:9092
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#
+#    topic:
+#      name: "master-item-topic"  # Main topic for messages
+#      fallback-topic: "fallback-topic"  # Fallback topic
+#
+#
+#  server:
+#    port: 8081

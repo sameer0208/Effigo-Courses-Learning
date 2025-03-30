@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: spring-batch
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/spring_batch_db0
+    username: postgres
+    password: sameer
+    initialization-mode: always
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc.batch_size: 3500
+        order_inserts: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    org.springframework: debug

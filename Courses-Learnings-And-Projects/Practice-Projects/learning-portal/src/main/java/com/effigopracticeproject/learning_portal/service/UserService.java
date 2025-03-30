@@ -90,6 +90,9 @@ public UserResponseDto createUser(UserRequestDto userRequestDto) {
         // Encrypt the password before saving
         user.setPassword(encryptPassword(userRequestDto.getPassword()));
 
+        // Assign role based on request
+        user.setUserRole(userRequestDto.getUserRole());
+
         user.setRegistrationDateTime(LocalDateTime.now());
         User savedUser = userRepository.save(user);
         logger.info("User saved successfully with ID: {}", savedUser.getUserId());
@@ -100,6 +103,7 @@ public UserResponseDto createUser(UserRequestDto userRequestDto) {
         throw new RuntimeException("Error creating user", e);
     }
 }
+
 
    /* public UserResponseDto getUserById(String userId) {
         logger.info("Fetching user with ID: {}", userId);

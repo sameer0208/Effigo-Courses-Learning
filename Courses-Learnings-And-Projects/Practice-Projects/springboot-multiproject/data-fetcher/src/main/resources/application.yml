@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: data-fetcher
+
+logging:
+  level:
+    org.springframework: debug
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+receiver:
+  api:
+    url: ${RECEIVER_API_URL:http://localhost:8081/api/data/receive}

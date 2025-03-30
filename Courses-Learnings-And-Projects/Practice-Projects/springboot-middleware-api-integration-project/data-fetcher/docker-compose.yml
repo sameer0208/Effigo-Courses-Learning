@@ -1,0 +1,18 @@
+#version: '3.8'
+
+services:
+  data-fetcher:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    container_name: data-fetcher
+    networks:
+      - app-network
+    volumes:
+      - ./src/main/resources/data.json:/app/resources/data.json
+
+networks:
+  app-network:
+    driver: bridge

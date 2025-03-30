@@ -42,7 +42,8 @@ public class CourseController {
             return new ResponseEntity<>(courseResponse, HttpStatus.OK);
         } catch (NoCourseFoundException e) {
             logger.warn("No course found with ID: {}", courseId);
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

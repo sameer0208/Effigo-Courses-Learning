@@ -1,15 +1,15 @@
 package com.effigopracticeproject.learning_portal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Data
 @Entity
-@Table(name ="users")
+@Table(name = "users")
 public class User {
 
     @Id

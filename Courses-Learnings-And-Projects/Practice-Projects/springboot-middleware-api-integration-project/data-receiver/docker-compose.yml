@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  data-receiver-service:
+    image: openjdk:17-jdk-alpine
+    container_name: data-receiver-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/data_receiver_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: sameer
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: jakarta-postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: data_receiver_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sameer
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:

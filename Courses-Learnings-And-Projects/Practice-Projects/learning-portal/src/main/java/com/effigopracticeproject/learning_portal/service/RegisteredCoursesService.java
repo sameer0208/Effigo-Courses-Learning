@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RegisteredCoursesService {
@@ -30,31 +29,6 @@ public class RegisteredCoursesService {
     @Autowired
     private CourseRepository courseRepository;
 
-//    public RegisteredCourses addRegisteredCourse(RegisteredCourses registeredCourses) {
-//        try {
-//            if (registeredCourses.getUser() == null || registeredCourses.getUser().getUserId() == null) {
-//                throw new IllegalArgumentException("User ID cannot be null");
-//            }
-//            if (registeredCourses.getCourse() == null || registeredCourses.getCourse().getCourseId() == null) {
-//                throw new IllegalArgumentException("Course ID cannot be null");
-//            }
-//
-//            // Manually set User and Course to prevent null issues
-//            User user = new User();
-//            user.setUserId(registeredCourses.getUser().getUserId());
-//
-//            Course course = new Course();
-//            course.setCourseId(registeredCourses.getCourse().getCourseId());
-//
-//            registeredCourses.setUser(user);
-//            registeredCourses.setCourse(course);
-//
-//            RegisteredCourses savedRegisteredCourse = registeredCoursesRepository.save(registeredCourses);
-//            return savedRegisteredCourse;
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error occurred while registering course: " + e.getMessage(), e);
-//        }
-//    }
 public RegisteredCourses addRegisteredCourse(RegisteredCourses registeredCourses) {
     try {
         if (registeredCourses.getUser() == null || registeredCourses.getUser().getUserId() == null) {

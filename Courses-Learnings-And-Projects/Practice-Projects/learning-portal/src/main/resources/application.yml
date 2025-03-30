@@ -30,7 +30,7 @@ spring:
   datasource:
     dbcp2:
       driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres_db:5432/learning_portal  # <-- Updated for Docker
+    url: jdbc:postgresql://localhost:5432/learning_portal  # <-- Updated for Docker
     username: postgres
     password: sameer
 
@@ -42,3 +42,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+server:
+  port: 8069

@@ -4,7 +4,6 @@ import com.effigopracticeproject.learning_portal.dto.FavouriteCourseDto;
 import com.effigopracticeproject.learning_portal.dto.FavouriteCourseRequestDto;
 import com.effigopracticeproject.learning_portal.dto.FavouriteCourseResponseDto;
 import com.effigopracticeproject.learning_portal.entity.FavouriteCourse;
-import com.effigopracticeproject.learning_portal.entity.RegisteredCourses;
 import com.effigopracticeproject.learning_portal.exceptions.NoFavouriteCourseFoundException;
 import com.effigopracticeproject.learning_portal.service.FavouriteCourseService;
 import org.slf4j.Logger;

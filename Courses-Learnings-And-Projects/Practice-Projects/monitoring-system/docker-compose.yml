@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  springboot-app:
+    build: .
+    container_name: monitoring-system
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/monitoring_db  # Connects to local PostgreSQL
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=sameer
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info,prometheus
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+    restart:
+      always
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:v2.40.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - springboot-app
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:8.3.3
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

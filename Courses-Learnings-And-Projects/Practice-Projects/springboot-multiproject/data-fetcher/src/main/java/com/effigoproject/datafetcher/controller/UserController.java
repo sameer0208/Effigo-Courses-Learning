@@ -16,19 +16,13 @@ public class UserController {
     private final UserService userService;
     private final RestTemplate restTemplate;
 
-    private static final String BASE_URL = "http://data-receiver:8081";
+    private static final String BASE_URL = "http://localhost:8081";
 
     public UserController(UserService userService, RestTemplate restTemplate) {
         this.userService = userService;
         this.restTemplate = restTemplate;
     }
 
-    // Get JSON from file
-//    @GetMapping("/fetch")
-//    public ResponseEntity<String> fetchJson() {
-//        String jsonData = userService.readJsonData();
-//        return ResponseEntity.ok(jsonData);
-//    }
 
     @PostMapping("/send")
     public ResponseEntity<String> sendJsonToReceiver() {

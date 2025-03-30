@@ -1,28 +1,3 @@
-#version: '2'
-#
-#services:
-#  app:
-#    image: learning-portal:v1
-#    container_name: app
-#    depends_on:
-#      - db
-#    ports:
-#      - "9000:8080"
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/learning_portal
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=sameer
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#
-#  db:
-#    image: postgres:17
-#    container_name: db_container
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=sameer
-#      - POSTGRES_DB=learning_portal
-
-
 version: "3.8"
 
 services:

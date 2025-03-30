@@ -17,13 +17,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Endpoint to receive user data from data-fetcher
     @PostMapping("/receive")
     public ResponseEntity<String> receiveUsers(@RequestBody List<User> users) {
         return ResponseEntity.ok(userService.saveUser(users));
     }
 
-    // Endpoint to fetch all stored users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
