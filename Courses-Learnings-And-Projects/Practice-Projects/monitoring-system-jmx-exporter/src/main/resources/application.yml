@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: monitoring-system-jmx-exporter
+
+  datasource:
+    dbcp2:
+      driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/monitoring_db
+    username: postgres
+    password: sameer
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  jmx:
+    enabled: true
+    default-domain: monitoring-system
+    mbean-domain: org.apache.catalina
+
+logging:
+  level:
+    org.springframework: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+      base-path: /actuator
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
+  server:
+    port: 8080

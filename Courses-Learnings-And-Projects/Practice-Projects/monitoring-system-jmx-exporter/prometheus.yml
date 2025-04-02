@@ -9,6 +9,3 @@ scrape_configs:
       - labels:
           app: "springboot"
 
-  - job_name: 'tomcat-jmx'
-    static_configs:
-      - targets: ['tomcat-monitoring:9404']
