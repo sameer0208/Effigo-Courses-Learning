@@ -1,0 +1,67 @@
+
+services:
+  springboot-app:
+    build: .
+    container_name: monitoring-system
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/monitoring_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=sameer
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info,prometheus
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+    restart: always
+    networks:
+      - monitoring
+  tomcat-app:
+    build: .
+    container_name: tomcat-monitoring
+    ports:
+      - "8081:8080"
+      - "9404:9404"
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:v2.40.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - tomcat-app
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:8.3.3
+    container_name: grafana
+    ports:
+      - "3001:3000"
+#    volumes:
+#      - ./grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST=smtp.gmail.com:587
+      - GF_SMTP_USER=josephferon0901@gmail.com
+      - GF_SMTP_PASSWORD=nlmgvkfzemqtqzje
+      - GF_SMTP_FROM_ADDRESS=josephferon0901@gmail.com
+      - GF_SMTP_FROM_NAME=Grafana Alerts
+      - GF_SMTP_SKIP_VERIFY=false
+      - GF_SMTP_STARTTLS=true
+      - GF_FEATURE_TOGGLES_ENABLE=ngalert
+      - GF_UNIFIED_ALERTING_ENABLED=true
+      - GF_UNIFIED_ALERTING_DISABLE_ALERTMANAGER_ALERTS=false
+      - GF_SMTP_SKIP_VERIFY=false
+      - GF_SMTP_STARTTLS=true
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
